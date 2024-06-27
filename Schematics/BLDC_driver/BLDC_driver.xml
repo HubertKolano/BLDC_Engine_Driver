@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>C:\Users\Hubert\Desktop\praca dyplomowa\Schematics\BLDC_driver\BLDC_driver.kicad_sch</source>
+    <date>2024-02-24 14:23:03</date>
+    <tool>Eeschema 7.0.7</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>BLDC_driver.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="J1">
+      <value>DA15_Receptacle_MountingHoles</value>
+      <footprint>Connector_Dsub:DSUB-15_Female_Vertical_P2.77x2.84mm_MountingHoles</footprint>
+      <datasheet> ~</datasheet>
+      <libsource lib="Connector" part="DA15_Receptacle_MountingHoles" description="15-pin female receptacle socket D-SUB connector (low-density/2 columns), Mounting Hole"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BLDC_driver.kicad_sch"/>
+      <property name="ki_description" value="15-pin female receptacle socket D-SUB connector (low-density/2 columns), Mounting Hole"/>
+      <property name="ki_keywords" value="female receptacle D-SUB connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d0f9f214-3f8a-41dd-bc30-2954f8fedde2</tstamps>
+    </comp>
+    <comp ref="J2">
+      <value>DA15_Receptacle</value>
+      <datasheet> ~</datasheet>
+      <libsource lib="Connector" part="DA15_Receptacle" description="15-pin female receptacle socket D-SUB connector (low-density/2 columns)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BLDC_driver.kicad_sch"/>
+      <property name="ki_description" value="15-pin female receptacle socket D-SUB connector (low-density/2 columns)"/>
+      <property name="ki_keywords" value="female receptacle D-SUB connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a2a005a0-3e92-409d-9c31-abeea7c2014b</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Connector" part="DA15_Receptacle">
+      <description>15-pin female receptacle socket D-SUB connector (low-density/2 columns)</description>
+      <docs> ~</docs>
+      <footprints>
+        <fp>DSUB*Female*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">DA15_Receptacle</field>
+        <field name="Datasheet"> ~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+        <pin num="4" name="4" type="passive"/>
+        <pin num="5" name="5" type="passive"/>
+        <pin num="6" name="6" type="passive"/>
+        <pin num="7" name="7" type="passive"/>
+        <pin num="8" name="8" type="passive"/>
+        <pin num="9" name="P9" type="passive"/>
+        <pin num="10" name="P10" type="passive"/>
+        <pin num="11" name="P111" type="passive"/>
+        <pin num="12" name="P12" type="passive"/>
+        <pin num="13" name="P13" type="passive"/>
+        <pin num="14" name="P14" type="passive"/>
+        <pin num="15" name="P15" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector" part="DA15_Receptacle_MountingHoles">
+      <description>15-pin female receptacle socket D-SUB connector (low-density/2 columns), Mounting Hole</description>
+      <docs> ~</docs>
+      <footprints>
+        <fp>DSUB*Female*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">DA15_Receptacle_MountingHoles</field>
+        <field name="Datasheet"> ~</field>
+      </fields>
+      <pins>
+        <pin num="0" name="PAD" type="passive"/>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+        <pin num="4" name="4" type="passive"/>
+        <pin num="5" name="5" type="passive"/>
+        <pin num="6" name="6" type="passive"/>
+        <pin num="7" name="7" type="passive"/>
+        <pin num="8" name="8" type="passive"/>
+        <pin num="9" name="P9" type="passive"/>
+        <pin num="10" name="P10" type="passive"/>
+        <pin num="11" name="P111" type="passive"/>
+        <pin num="12" name="P12" type="passive"/>
+        <pin num="13" name="P13" type="passive"/>
+        <pin num="14" name="P14" type="passive"/>
+        <pin num="15" name="P15" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Connector">
+      <uri>C:\Program Files\KiCad\7.0\share\kicad\symbols\/Connector.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="unconnected-(J1-P9-Pad9)">
+      <node ref="J1" pin="9" pinfunction="P9" pintype="passive"/>
+    </net>
+    <net code="2" name="unconnected-(J1-P10-Pad10)">
+      <node ref="J1" pin="10" pinfunction="P10" pintype="passive"/>
+    </net>
+    <net code="3" name="unconnected-(J1-P12-Pad12)">
+      <node ref="J1" pin="12" pinfunction="P12" pintype="passive"/>
+    </net>
+    <net code="4" name="unconnected-(J1-P13-Pad13)">
+      <node ref="J1" pin="13" pinfunction="P13" pintype="passive"/>
+    </net>
+    <net code="5" name="unconnected-(J1-P14-Pad14)">
+      <node ref="J1" pin="14" pinfunction="P14" pintype="passive"/>
+    </net>
+    <net code="6" name="unconnected-(J1-P15-Pad15)">
+      <node ref="J1" pin="15" pinfunction="P15" pintype="passive"/>
+    </net>
+    <net code="7" name="unconnected-(J1-P111-Pad11)">
+      <node ref="J1" pin="11" pinfunction="P111" pintype="passive"/>
+    </net>
+    <net code="8" name="unconnected-(J1-PAD-Pad0)">
+      <node ref="J1" pin="0" pinfunction="PAD" pintype="passive"/>
+    </net>
+    <net code="9" name="unconnected-(J1-Pad1)">
+      <node ref="J1" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="10" name="unconnected-(J1-Pad2)">
+      <node ref="J1" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="11" name="unconnected-(J1-Pad3)">
+      <node ref="J1" pin="3" pinfunction="3" pintype="passive"/>
+    </net>
+    <net code="12" name="unconnected-(J1-Pad4)">
+      <node ref="J1" pin="4" pinfunction="4" pintype="passive"/>
+    </net>
+    <net code="13" name="unconnected-(J1-Pad5)">
+      <node ref="J1" pin="5" pinfunction="5" pintype="passive"/>
+    </net>
+    <net code="14" name="unconnected-(J1-Pad6)">
+      <node ref="J1" pin="6" pinfunction="6" pintype="passive"/>
+    </net>
+    <net code="15" name="unconnected-(J1-Pad7)">
+      <node ref="J1" pin="7" pinfunction="7" pintype="passive"/>
+    </net>
+    <net code="16" name="unconnected-(J1-Pad8)">
+      <node ref="J1" pin="8" pinfunction="8" pintype="passive"/>
+    </net>
+    <net code="17" name="unconnected-(J2-P9-Pad9)">
+      <node ref="J2" pin="9" pinfunction="P9" pintype="passive"/>
+    </net>
+    <net code="18" name="unconnected-(J2-P10-Pad10)">
+      <node ref="J2" pin="10" pinfunction="P10" pintype="passive"/>
+    </net>
+    <net code="19" name="unconnected-(J2-P12-Pad12)">
+      <node ref="J2" pin="12" pinfunction="P12" pintype="passive"/>
+    </net>
+    <net code="20" name="unconnected-(J2-P13-Pad13)">
+      <node ref="J2" pin="13" pinfunction="P13" pintype="passive"/>
+    </net>
+    <net code="21" name="unconnected-(J2-P14-Pad14)">
+      <node ref="J2" pin="14" pinfunction="P14" pintype="passive"/>
+    </net>
+    <net code="22" name="unconnected-(J2-P15-Pad15)">
+      <node ref="J2" pin="15" pinfunction="P15" pintype="passive"/>
+    </net>
+    <net code="23" name="unconnected-(J2-P111-Pad11)">
+      <node ref="J2" pin="11" pinfunction="P111" pintype="passive"/>
+    </net>
+    <net code="24" name="unconnected-(J2-Pad1)">
+      <node ref="J2" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="25" name="unconnected-(J2-Pad2)">
+      <node ref="J2" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="26" name="unconnected-(J2-Pad3)">
+      <node ref="J2" pin="3" pinfunction="3" pintype="passive"/>
+    </net>
+    <net code="27" name="unconnected-(J2-Pad4)">
+      <node ref="J2" pin="4" pinfunction="4" pintype="passive"/>
+    </net>
+    <net code="28" name="unconnected-(J2-Pad5)">
+      <node ref="J2" pin="5" pinfunction="5" pintype="passive"/>
+    </net>
+    <net code="29" name="unconnected-(J2-Pad6)">
+      <node ref="J2" pin="6" pinfunction="6" pintype="passive"/>
+    </net>
+    <net code="30" name="unconnected-(J2-Pad7)">
+      <node ref="J2" pin="7" pinfunction="7" pintype="passive"/>
+    </net>
+    <net code="31" name="unconnected-(J2-Pad8)">
+      <node ref="J2" pin="8" pinfunction="8" pintype="passive"/>
+    </net>
+  </nets>
+</export>
