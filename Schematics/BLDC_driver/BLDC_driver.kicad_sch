@@ -8728,7 +8728,7 @@
 	)
 	(wire
 		(pts
-			(xy 71.12 46.99) (xy 83.82 46.99)
+			(xy 71.12 46.99) (xy 87.63 46.99)
 		)
 		(stroke
 			(width 0)
@@ -9058,7 +9058,7 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 44.45) (xy 83.82 46.99)
+			(xy 87.63 44.45) (xy 87.63 46.99)
 		)
 		(stroke
 			(width 0)
@@ -9638,17 +9638,7 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 34.29) (xy 87.63 34.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c538cdc3-5dd4-4807-be9e-e46230906c83")
-	)
-	(wire
-		(pts
-			(xy 83.82 34.29) (xy 83.82 36.83)
+			(xy 87.63 34.29) (xy 87.63 36.83)
 		)
 		(stroke
 			(width 0)
@@ -9685,6 +9675,16 @@
 			(type default)
 		)
 		(uuid "c8da1dc0-e8f4-4912-be9c-eec736eef5af")
+	)
+	(wire
+		(pts
+			(xy 87.63 34.29) (xy 83.82 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c8db6974-fa31-44ed-b7e3-8aaefb483e96")
 	)
 	(wire
 		(pts
@@ -14631,7 +14631,7 @@
 	)
 	(symbol
 		(lib_id "Device:C_Polarized")
-		(at 83.82 40.64 0)
+		(at 87.63 40.64 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -14641,7 +14641,7 @@
 		(fields_autoplaced yes)
 		(uuid "63202667-b645-42d9-841f-c29b2b84cd66")
 		(property "Reference" "C11"
-			(at 87.63 38.4809 0)
+			(at 91.44 38.4809 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14650,7 +14650,7 @@
 			)
 		)
 		(property "Value" "220u/35v"
-			(at 87.63 41.0209 0)
+			(at 91.44 41.0209 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14659,7 +14659,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm"
-			(at 82.8548 44.45 0)
+			(at 86.6648 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14668,7 +14668,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 83.82 40.64 0)
+			(at 87.63 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14677,7 +14677,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 83.82 40.64 0)
+			(at 87.63 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
