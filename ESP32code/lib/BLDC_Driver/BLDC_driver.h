@@ -6,12 +6,16 @@
 #include <Wire.h>
 #include <U8g2lib.h>
 #include <Adafruit_GFX.h>
+
+#define BAUD_RATE 115200
+
 // oled defines
-#define LINE1_Y 14
-#define LINE2_Y 32
-#define LINE3_Y 50
-#define COLUMN1_X 10
-#define COLUMN2_X 70
+#define LINE1 14
+#define LINE2 32
+#define LINE3 50
+#define COLUMN1 10
+#define COLUMN2 60
+#define COLUMN3 90 
 
 #define DAC1_PIN 25
 #define DAC2_PIN 26 
@@ -24,6 +28,10 @@
 #define DEBOUNCE_TIME 50          
 #define LONG_PRESS_TIME 1000
 #define HOLD_PRESS_INTERVAL 100
+
+#define ENGINE_CLOCKWISE false
+#define ENGINE_COUNTERCLOCKWISE true
+
 
 struct Button {
     uint8_t pin;                    // Button GPIO pin
@@ -48,7 +56,11 @@ void button2Press();
 void button3Press();
 void button4Press();
 
-void updateOLED(int voltage, int rpm, bool direction);
+void setupTimer();
+bool checkElapsedTime(unsigned long interval);
+void resetTimer();
+
+void welcomeOLED(int voltage, int rpm, bool direction);
 
 void setCombinedDACOutput(int inputValue);
 

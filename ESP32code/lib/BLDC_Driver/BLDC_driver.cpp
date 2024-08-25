@@ -1,15 +1,21 @@
 #include "BLDC_driver.h"
 
+
+//screen declarations
 U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
-
-
+//button declarations
 Button buttons[] = {
     {BUTTON1_PIN, button1Press, false, false, 0, 0, 0},
     {BUTTON2_PIN, button2Press, false, false, 0, 0, 0},
     {BUTTON3_PIN, button3Press, false, false, 0, 0, 0},
     {BUTTON4_PIN, button4Press, false, false, 0, 0, 0} 
 };
+
+//timer declarations
+hw_timer_t *timer = NULL;      
+unsigned long elapsedTime = 0; 
+unsigned long lastResetTime = 0; 
 
 void initOLED() {
     Wire.begin();
@@ -24,7 +30,7 @@ void initOLED() {
 }
 
 void initSerial(){
-    Serial.begin(921600);
+    Serial.begin(115200);
     Serial.println("Hello World!");
 }
 
@@ -32,16 +38,14 @@ void initSerial(){
 const int numButtons = sizeof(buttons) / sizeof(buttons[0]);
 
 void initButtons() {
-    // Set pin modes for each button
+
     for (int i = 0; i < numButtons; i++) {
-        pinMode(buttons[i].pin, INPUT_PULLUP);  // Use pull-up resistors
+        pinMode(buttons[i].pin, INPUT_PULLUP); 
     }
 }
 
 void checkButtons() {
-    unsigned long currentTime = millis();
 
-    // Loop through each button and check its state
     for (int i = 0; i < numButtons; i++) {
         handleButtonPress(buttons[i]);
     }
@@ -49,20 +53,21 @@ void checkButtons() {
 
 void handleButtonPress(Button &button) {
     unsigned long currentTime = millis();
-    bool currentState = digitalRead(button.pin) == LOW;  // Button is pressed when LOW
+    bool buttonPressed = digitalRead(button.pin) == LOW; 
 
-    if (currentState && !button.isPressed && currentTime - button.lastPressTime > DEBOUNCE_TIME) {
+    if (buttonPressed && !button.isPressed && currentTime - button.lastPressTime > DEBOUNCE_TIME) {
         button.isPressed = true;
         button.pressStartTime = currentTime;
         button.longPressTriggered = false;
-        button.lastLongPressActionTime = currentTime; // Initialize last action time
+        button.lastLongPressActionTime = currentTime;
         button.lastPressTime = currentTime;
+        // detection of short press
+            button.PressCallback();
     }
 
-    if (currentState && button.isPressed) {
-        // Button is being held down
-        if (!button.longPressTriggered && currentTime - button.pressStartTime > LONG_PRESS_TIME) {
+    if (buttonPressed && button.isPressed) {
             // Long press detected
+        if (!button.longPressTriggered && currentTime - button.pressStartTime > LONG_PRESS_TIME) {
             button.PressCallback();
             button.longPressTriggered = true;  // Prevent further long press callbacks until released
         } else if (button.longPressTriggered && currentTime - button.lastLongPressActionTime > HOLD_PRESS_INTERVAL) {
@@ -70,16 +75,11 @@ void handleButtonPress(Button &button) {
             button.lastLongPressActionTime = currentTime;
         }
     }
-
-    if (!currentState && button.isPressed && currentTime - button.lastPressTime > DEBOUNCE_TIME) {
-        // Button was just released
+        //detect button release
+    if (!buttonPressed && button.isPressed && currentTime - button.lastPressTime > DEBOUNCE_TIME) {
         button.isPressed = false;
         button.lastPressTime = currentTime;
 
-        if (!button.longPressTriggered) {
-            // Short press detected (only trigger if long press hasn't been triggered)
-            button.PressCallback();
-        }
     }
 }
 
@@ -96,56 +96,76 @@ void button4Press(){
     Serial.println("Button 4 press!");
 }
 
+//count time increment every interrupt (which is) 100ms
+void IRAM_ATTR onTimer() {
+  elapsedTime += 100;
+}
 
-// void myFunction(Button &button) {
-//     switch (button.pin){
-//         case BUTTON1_PIN:  Serial.println("Button on pin 1"); break;
-//         case BUTTON2_PIN:  Serial.println("Button on pin 2"); break;
-//         case BUTTON3_PIN:  Serial.println("Button on pin 3"); break;
-//         case BUTTON4_PIN:  Serial.println("Button on pin 4"); break;
-//     }
-// }
+void setupTimer() {
+  timer = timerBegin(0, 80, true);             // Use timer 0, 80Mhz with prescaler of 80 results in 1us tick
+  timerAttachInterrupt(timer, &onTimer, true);
+  timerAlarmWrite(timer, 100000, true);        // Set alarm to 100000us (100ms)
+  timerAlarmEnable(timer);
+}
 
+// Function to check if the specified amount of time has passed since last reset (also resets)
+bool checkElapsedTime(unsigned long interval) {
+  if (elapsedTime - lastResetTime >= interval) {
+    lastResetTime = elapsedTime;
+    return true;
+  }
+  return false;
+}
 
+// Function to reset the timer manually
+void resetTimer() {
+  lastResetTime = elapsedTime;
+}
 
-
-void updateOLED(int voltage, int rpm, bool direction) {
+void welcomeOLED(int voltage, int rpm, bool direction) {
     u8g2.clearBuffer();
-    u8g2.drawStr(COLUMN1_X , LINE1_Y , "mV: ");
-    u8g2.drawStr(COLUMN1_X , LINE2_Y , "RPM: ");
-    u8g2.drawStr(COLUMN1_X , LINE3_Y , "DIR:");
+    u8g2.drawStr(0 , LINE1 , ">");
+    u8g2.drawStr(COLUMN1 , LINE1 , "mV: ");
+    u8g2.drawStr(COLUMN1 , LINE2 , "RPM: ");
+    u8g2.drawStr(COLUMN1 , LINE3 , "DIR:");
 
     char voltageStr[5], rpmStr[5];
     sprintf(voltageStr, "%d", voltage);
     sprintf(rpmStr, "%d", rpm);
 
-    // Display the updated values next to the labels
-    u8g2.drawStr(COLUMN2_X , LINE1_Y, voltageStr);     
-    u8g2.drawStr(COLUMN2_X , LINE2_Y, rpmStr);         
-    u8g2.drawUTF8(COLUMN2_X ,LINE3_Y, direction ? "↻" : "↺");  
+    u8g2.drawStr(COLUMN2 , LINE1, voltageStr);     
+    u8g2.drawStr(COLUMN2 , LINE2, rpmStr);         
+    u8g2.drawUTF8(COLUMN2 ,LINE3, direction ? "↻" : "↺");  
+
+    u8g2.drawStr(COLUMN3 , LINE1, "set");    
 
     u8g2.sendBuffer();
 }
 
 void setCombinedDACOutput(int inputValue) {
-  // Check if the input is within the allowed range
-  if (inputValue < 0 || inputValue > 5000) {
-    Serial.println("Error: Input out of range. Value should be between 0 and 5000.");
-    return;
-  }
-  
-  int outputVoltage = map(inputValue, 0, 5000, 0, 6600);
+    // input check
+    if (inputValue < 0 || inputValue > 5000) {
+        Serial.println("Error: Input out of range. Value should be between 0 and 5000.");
+        return;
+    }
+    
+    //mapping values, maxes out one dac before usses second one
+    int dac1Voltage, dac2Voltage;
 
-  int dac1Voltage = outputVoltage / 2; 
-  int dac2Voltage = outputVoltage - dac1Voltage; 
+    if (inputValue <= 2500) {
+        dac1Voltage = inputValue;
+        dac2Voltage = 0;
+    } else {
+        dac1Voltage = 2500;
+        dac2Voltage = inputValue - 2500;
+}
 
-  int dac1Value = map(dac1Voltage, 0, 3300, 0, 255);
-  int dac2Value = map(dac2Voltage, 0, 3300, 0, 255);
+    int dac1Value = map(dac1Voltage, 0, 2500, 0, 255);
+    int dac2Value = map(dac2Voltage, 0, 2500, 0, 255);
 
-  // Output the values to the DAC pins
-  dacWrite(DAC1_PIN, dac1Value);
-  //dacWrite(DAC2_PIN, dac2Value);
+    dacWrite(DAC1_PIN, dac1Value);
+    dacWrite(DAC2_PIN, dac2Value);
 
-  // Debugging info for UART
-  Serial.printf("Input: %d [mV] | DAC1: %d bits | DAC2: %d bits\n", inputValue, dac1Value, dac2Value);
+    // Debugging info for UART
+    Serial.printf("DAC written, Input: %d [mV] | DAC1: %d bits | DAC2: %d bits\t\n", inputValue, dac1Value, dac2Value);
 }
