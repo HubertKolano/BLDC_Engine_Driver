@@ -1,5 +1,5 @@
-#ifndef ENGINE_RPM_H
-#define ENGINE_RPM_H
+#ifndef BLDC_ENGINERPM_H
+#define BLDC_ENGINERPM_H
 
 #include <Arduino.h>
 
