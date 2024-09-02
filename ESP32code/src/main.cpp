@@ -1,7 +1,6 @@
 #include "BLDC_driver.h"
 #include "BLDC_EngineRPM.h"
 #include <Arduino.h>
-static int voltage = 0;
 
 void setup() {
   initOLED();
@@ -13,9 +12,9 @@ void setup() {
   setupTimer();
 
   setupEngineRPM();
-
-  setCombinedDACOutput(voltage);
-  welcomeOLED(voltage, 2000, false);
+  voltageDACS = 2000;
+  setCombinedDACOutput(voltageDACS);
+  welcomeOLED(voltageDACS, 0, false, engineReadRPM);
   // delay(5000);
   // voltage = 2500;
   // updateOLED(voltage, 5000, true);
@@ -25,16 +24,12 @@ void setup() {
 }
 
 void loop() {
-    if(checkElapsedTime(5000)){
-      static int i = 0;
-      setCombinedDACOutput(i);
-      i += 500;
-      i = i <= 5000 ? i : 0 ;
-
+  if(checkElapsedTime(1000)){
+    Serial.print("Engine RPM: ");
+    Serial.println(engineReadRPM);
+    OLEDrpmRead(engineReadRPM);
     }
-  Serial.print("Engine RPM: ");
-  Serial.println(engineRPM);
-  delay(1000);
+
   checkButtons();
 
 }

@@ -1,11 +1,11 @@
 #include <Arduino.h>
 
-const int analogPin = 34;      // Analog input pin
-const int pwmPin = 14;         // Pin for PWM output
-const int pwmChannel = 0;      // PWM channel (0-15 on ESP32)
-const int pwmResolution = 8;   // PWM resolution (8-bit: 0-255)
-const int pwmBaseFreq = 6000;  // Base frequency for PWM (max frequency)
-
+#define ANALOG_PIN 34
+#define PWM_PIN 14
+#define PWM_CHANNEL 0
+#define PWM_RESOLUTION 7
+#define PWM_BASE_FREQ 108000
+#define TIME_INTERVAL 500 // 0,5sec update time
 unsigned long previousMillis = 0; // To store last update time
 const unsigned long interval = 2000; // Update interval of 2sec
 
@@ -13,33 +13,31 @@ void setup() {
   Serial.begin(115200);
 
   // Setup PWM on the specified pin
-  ledcSetup(pwmChannel, pwmBaseFreq, pwmResolution);
-  ledcAttachPin(pwmPin, pwmChannel);
+  if (!ledcSetup(PWM_CHANNEL, PWM_BASE_FREQ, PWM_RESOLUTION)){
+    Serial.println("Failed to setup PWM");
+  }
+  ledcAttachPin(PWM_PIN, PWM_CHANNEL);
+  ledcWrite(PWM_CHANNEL, 64);
 }
 
 void loop() {
   unsigned long currentMillis = millis();
 
-  if (currentMillis - previousMillis >= interval) {
+  if (currentMillis - previousMillis >= TIME_INTERVAL) {
     previousMillis = currentMillis;
-
     // Read the analog value (range from 0 to 4095)
-    int analogValue = analogRead(analogPin);
+    int analogValue = analogRead(ANALOG_PIN);
     
-    // Map the analog value to a frequency range from 0 to 6000 Hz
-    int mappedFreq = map(analogValue, 0, 4095, 0, 6000);
+    int mappedFreq = map(analogValue, 0, 4095, 0, PWM_BASE_FREQ);
 
-    // Output the frequency using PWM
     if (mappedFreq > 0) {
-      ledcWriteTone(pwmChannel, mappedFreq); // Set PWM frequency
+    ledcChangeFrequency(PWM_CHANNEL, mappedFreq, PWM_RESOLUTION);
+    ledcWrite(PWM_CHANNEL, 64);
     } else {
-      ledcWriteTone(pwmChannel, 0); // Stop the signal if frequency is 0
+    ledcWrite(PWM_CHANNEL, 0);
     }
-
     // Output for debugging
-    Serial.print("Analog Value: ");
-    Serial.print(analogValue);
-    Serial.print(" - Mapped Frequency: ");
-    Serial.println(mappedFreq);
+    Serial.printf("Analog Value: %d - Mapped Frequency: %d\n" ,analogValue, mappedFreq);
+
   }
 }
