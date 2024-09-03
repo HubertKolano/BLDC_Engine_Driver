@@ -21,15 +21,18 @@
 // DAC pins and values
 #define DAC1_PIN 25
 #define DAC2_PIN 26 
-#define DAC_MAX_VOLTAGE 5000
-#define DAC_HALF_MAX_VOLTAGE 2500
-#define DAC_START_ENGINE_VOLTAGE 900
+#define DAC_MAX_VOLTAGE 4400
+#define DAC_HALF_MAX_VOLTAGE DAC_MAX_VOLTAGE/2
+#define DAC_START_ENGINE_VOLTAGE 0
+
+// direction control
+#define DIRECTION_PIN 27
 
 //RPM regulate function
-#define PID_Kp 2.0
-#define PID_Ki 0.1
-#define PID_Kd 0.5
-#define DELTA_TIME 3000
+#define PID_Kp 1.0
+#define PID_Ki 0.2
+#define PID_Kd 0.1
+#define DELTA_TIME_PID 1000
 
 //buttons pins and timings
 #define BUTTON1_PIN 18
@@ -48,8 +51,7 @@ extern int voltageDACS;
 extern int engineSetRPM;
 extern bool engineDirection;
 
-
-//interface declaration
+//main loop control
 extern bool turnEngineControlPID;
 
 struct Button {
@@ -61,11 +63,14 @@ struct Button {
     unsigned long pressStartTime;    // When the button was first pressed
     unsigned long lastLongPressActionTime; // Last time the long press action was performed
 };
+extern short int current_line;
 // Function prototypes:
+void initAll();
 
-void initOLED();
+
 
 void initSerial();
+
 
 void initButtons();
 void checkButtons();
@@ -75,22 +80,31 @@ void button2Press();
 void button3Press();
 void button4Press();
 
-void setupTimer();
+
+void initTimer();
 bool checkElapsedTime(unsigned long interval);
 void resetTimer();
 
 
 //oled functions
+void initOLED();
 void welcomeOLED(int voltage, int rpmSet, bool direction, int rpmRead);
 void OLEDvoltage(int voltage);
 void OLEDrpmRead(int rpm);
 void OLEDdir(bool direction);
 void OLEDrpmSet(int rpm);
+void OLEDchoice(short current_line);
+void OLEDrpmSet();
+void OLEDvoltageSet();
 
 void setCombinedDACOutput(int inputValue);
 
 void regulateRPMWithPID();
-
 void turnOnRegulationPID(int setRPM);
+void turnOffRegulationPID();
+
+//direction control
+void initDirection();
+void changeDirection();
 
 #endif
