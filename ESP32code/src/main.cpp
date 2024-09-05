@@ -1,23 +1,33 @@
-#include <BLDC_driver.h>
-
-static int voltage = 5000;
+#include "BLDC_driver.h"
+#include "BLDC_EngineRPM.h"
+#include "BLDC_website.h"
+#include "BLDC_UART.h"
+#include <Arduino.h>
 
 void setup() {
-  initOLED();
-  
+
+  initAll();
   initSerial();
-  
-  setCombinedDACOutput(voltage);
-  updateOLED(voltage, 2000, false);
-  delay(5000);
-  voltage = 2500;
-  updateOLED(voltage, 5000, true);
-  setCombinedDACOutput(voltage);
+  setupEngineRPM();
+
+  String ssid, password;
+  readWiFiCredentials(ssid, password);
+  initWIFI(ssid, password);
+
+  serialMenuMessage();
 }
 
 void loop() {
- // Serial.println("Hello from the loop");
- // delay(1000);
+  if(turnEngineControlPID && checkElapsedTime(DELTA_TIME_PID)){
+    regulateRPMWithPID();
+    OLEDrpmRead(engineReadRPM);
+    }
+  else if (checkElapsedTime(DELTA_TIME_PID) || checkElapsedTime(1000)){
+    OLEDrpmRead(engineReadRPM);
+  }
+  checkButtons();
+  //checkUart();
 
+  
 
 }
