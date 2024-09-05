@@ -1,9 +1,9 @@
 #include "BLDC_driver.h"
 
-int voltageDACS;
-int engineSetRPM;
-bool engineDirection;
-bool turnEngineControlPID;
+int voltageDACS = 0;
+int engineSetRPM = 0;
+bool engineDirection = false;
+bool turnEngineControlPID = false;
 
 #define OLED_STEP_VOLTAGE 25
 #define OLED_STEP_RPM 25
@@ -11,17 +11,26 @@ bool turnEngineControlPID;
 
 void initAll(){
     initButtons();
-    initSerial();
     initOLED();
     initTimer();
     initDirection();
+    welcomeOLED(voltageDACS, engineSetRPM, engineDirection, engineReadRPM);
+    
 }
 
 
-void initSerial(){
-    Serial.begin(115200);
-    Serial.println("Hello World!");
+
+/*TEXT FORMATTING*/
+char*  formatRPM(int rpm) {
+  static char formattedResult[6]; 
+  float result = (float)rpm /ENGINE_TORQUE;
+
+  // will show a string with 2 decimal places
+    snprintf(formattedResult, sizeof(formattedResult), "%.2f", result);
+
+  return formattedResult;
 }
+
 
 
 /* BUTTONS DECLARATION */
@@ -233,17 +242,15 @@ void welcomeOLED(int voltage, int rpmSet, bool direction, int rpmRead) {
     u8g2.drawStr(COLUMN1 , LINE4 , "read:");
 
 
-    char voltageStr[5], rpmSetStr[5], rpmReadStr[5]; 
+    char voltageStr[5];
     sprintf(voltageStr, "%d", voltage);
-    sprintf(rpmSetStr, "%d", rpmSet);
-    sprintf(rpmReadStr, "%d", rpmRead);
 
     u8g2.drawStr(COLUMN2 , LINE1, voltageStr);
     
-    u8g2.drawStr(COLUMN2 , LINE2, rpmSet == 0 ? "N/A" : rpmSetStr);
+    u8g2.drawStr(COLUMN2 , LINE2, rpmSet == 0 ? "N/A" : formatRPM(rpmSet));
             
     u8g2.drawUTF8(COLUMN2 ,LINE3, direction ? "↻" : "↺");  
-    u8g2.drawStr(COLUMN2 , LINE4, rpmReadStr);  
+    u8g2.drawStr(COLUMN2 , LINE4, formatRPM(rpmRead));  
 
     u8g2.drawStr(COLUMN3 , LINE1, "set");    
 
@@ -260,10 +267,8 @@ void OLEDvoltage(int voltage){
 
 void OLEDrpmSet(int rpm){
     if (rpm != 0) {
-        char rpmStr[5];
-        sprintf(rpmStr, "%d", rpm);
         u8g2.drawStr(COLUMN2 , LINE2, "       ");
-        u8g2.drawStr(COLUMN2 , LINE2, rpmStr); 
+        u8g2.drawStr(COLUMN2 , LINE2, formatRPM(rpm)); 
     }
     else {
         u8g2.drawStr(COLUMN2 , LINE2, "       ");
@@ -272,10 +277,8 @@ void OLEDrpmSet(int rpm){
     u8g2.sendBuffer();
 }
 void OLEDrpmRead(int rpm){
-    char rpmStr[5];
-    sprintf(rpmStr, "%d", rpm);
     u8g2.drawStr(COLUMN2 , LINE4, "       ");
-    u8g2.drawStr(COLUMN2 , LINE4, rpmStr);  
+    u8g2.drawStr(COLUMN2 , LINE4, formatRPM(rpm));  
     u8g2.sendBuffer();
 }
 
@@ -335,6 +338,8 @@ void setCombinedDACOutput(int inputValue) {
     OLEDvoltage(inputValue);
 }
 
+/*  PID regulation code*/
+
     float error = 0.0;
     float derivative = 0.0;
     float output = 0.0;
@@ -344,13 +349,12 @@ void setCombinedDACOutput(int inputValue) {
 
 void regulateRPMWithPID() {
     
-        // Break out of loop when the error is sufficiently small (within a threshold)
+    // Break out of loop when the error is sufficiently small (within a threshold)
+    // if (fabs(error) < 25) {
+    //     turnEngineControlPID = false;
+    //     return;
+    // }
     error = engineSetRPM - engineReadRPM;
-    if (fabs(error) < 25) {
-        turnEngineControlPID = false;
-        return;
-    }
-
 
     integral += error * DELTA_TIME_PID/1000;
 
@@ -362,12 +366,8 @@ void regulateRPMWithPID() {
 
     output = constrain(output, DAC_START_ENGINE_VOLTAGE, DAC_MAX_VOLTAGE);
 
-    // Set the voltage (apply to the motor)
     voltageDACS = output;
     setCombinedDACOutput(voltageDACS);
-
-
-
    }
 
 void turnOnRegulationPID(int setRPM){
@@ -378,7 +378,7 @@ void turnOnRegulationPID(int setRPM){
         turnEngineControlPID = false;
     }
     else{
-        //try to guess the voltage value
+        //try to guess the voltage value (actually doesnt help much)
         //setCombinedDACOutput(map(setRPM, 0, ENGINE_MAX_RPM, DAC_START_ENGINE_VOLTAGE, DAC_MAX_VOLTAGE));
         turnEngineControlPID = true;
         resetTimer();
@@ -397,11 +397,13 @@ void turnOffRegulationPID(){
 /*Direction Control*/
 void initDirection() {
     pinMode(DIRECTION_PIN, OUTPUT);
-    digitalWrite(DIRECTION_PIN, engineDirection);
+    digitalWrite(DIRECTION_PIN, ENGINE_REVERSE_DIR_CONTROL ? !engineDirection : engineDirection);
 }
 
 void changeDirection(){
     engineDirection = !engineDirection;
-    digitalWrite(DIRECTION_PIN, engineDirection);
+    digitalWrite(DIRECTION_PIN, ENGINE_REVERSE_DIR_CONTROL ? !engineDirection : engineDirection);
     OLEDdir(engineDirection);
+    resetTimer(); //resets timer so PID doesn't get disrupted so much by the action
 }
+

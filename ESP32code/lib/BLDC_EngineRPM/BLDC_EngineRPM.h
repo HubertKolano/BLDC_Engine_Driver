@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include "soc/timer_group_struct.h"
 #include "soc/timer_group_reg.h"
+#include <esp_task_wdt.h>
+
 
 #define INTERVAL_READOUT 1000
 #define ENGINE_PPR 36

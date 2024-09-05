@@ -5,6 +5,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <U8g2lib.h>
+#include <EEPROM.h>
 
 //UART defines
 #define BAUD_RATE 115200
@@ -29,7 +30,7 @@
 #define DIRECTION_PIN 27
 
 //RPM regulate function
-#define PID_Kp 1.0
+#define PID_Kp 0.5
 #define PID_Ki 0.2
 #define PID_Kd 0.1
 #define DELTA_TIME_PID 1000
@@ -40,12 +41,15 @@
 #define BUTTON3_PIN 19
 #define BUTTON4_PIN 5
 #define DEBOUNCE_TIME 50          
-#define LONG_PRESS_TIME 1000
+#define LONG_PRESS_TIME 600
 #define HOLD_PRESS_INTERVAL 100
 
-#define ENGINE_CLOCKWISE false
-#define ENGINE_COUNTERCLOCKWISE true
+//engine parameters
+#define ENGINE_REVERSE_DIR_CONTROL false
 #define ENGINE_MAX_RPM 3000
+#define ENGINE_TORQUE 50.0
+
+
 
 extern int voltageDACS;
 extern int engineSetRPM;
@@ -67,9 +71,8 @@ extern short int current_line;
 // Function prototypes:
 void initAll();
 
+char*  formatRPM(int rpm);
 
-
-void initSerial();
 
 
 void initButtons();
@@ -106,5 +109,8 @@ void turnOffRegulationPID();
 //direction control
 void initDirection();
 void changeDirection();
+
+
+
 
 #endif

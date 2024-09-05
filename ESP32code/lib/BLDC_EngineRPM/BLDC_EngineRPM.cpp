@@ -1,5 +1,4 @@
 #include "BLDC_EngineRPM.h"
-#include <esp_task_wdt.h>
 
 volatile int engineReadRPM = 0;    
 volatile int pulseCount = 0;   
