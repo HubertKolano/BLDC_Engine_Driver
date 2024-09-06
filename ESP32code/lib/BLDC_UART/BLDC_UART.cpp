@@ -26,18 +26,16 @@ void serialMenuMessage(){
     sendToBothUarts("8 - Show Menu\n");
 }
 
-
-// Function to read data from both UARTs (prioritizes UART0)
 String readFromBothUarts() {
   String input = "";
 
-//   if (Serial.available()) {
+  if (Serial.available()) {
     input = Serial.readStringUntil('\0');
-//   }
+  }
 
-//   if (input.length() == 0 && Serial2.available()) {
-//     input = Serial2.readStringUntil('\0');
-//   }
+  if (input.length() == 0 && Serial2.available()) {
+    input = Serial2.readStringUntil('\0');
+  }
   input.trim();
   return input;
 }

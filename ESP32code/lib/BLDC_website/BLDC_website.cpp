@@ -183,12 +183,10 @@ void initWIFI(String ssid, String password) {
   Serial.println("Connected to WiFi");
   Serial.println(WiFi.localIP());
 
-  // Serve the web page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send_P(200, "text/html", index_html);
   });
 
-  // Endpoint for AJAX request to get data
   server.on("/getData", HTTP_GET, [](AsyncWebServerRequest *request){
      String json = "{\"voltage\":" + String(voltageDACS) + 
                   ",\"setRPM\":" + (turnEngineControlPID ? formatRPM(engineSetRPM) : "\"voltage control\"") + 
@@ -197,7 +195,6 @@ void initWIFI(String ssid, String password) {
                   "}";
     request->send(200, "application/json", json);
   });
-
   // Endpoint to handle form submissions
  server.on("/submitRPM", HTTP_POST, [](AsyncWebServerRequest *request){
     if (request->hasParam("rpm", true)) {

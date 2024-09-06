@@ -26,7 +26,7 @@ void loop() {
     OLEDrpmRead(engineReadRPM);
   }
   checkButtons();
-  //checkUart();
+  checkUart();
 
   
 
