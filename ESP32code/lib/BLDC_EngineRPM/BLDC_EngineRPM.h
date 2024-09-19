@@ -8,7 +8,7 @@
 
 
 #define INTERVAL_READOUT 1000
-#define ENGINE_PPR 36
+#define ENGINE_PPR 0.7
 
 // Global variable to store readings of engine RPM
 extern volatile int engineReadRPM;

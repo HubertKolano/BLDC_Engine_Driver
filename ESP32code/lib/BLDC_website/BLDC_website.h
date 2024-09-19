@@ -22,5 +22,6 @@ void readWiFiCredentials(String &ssid, String &password);
 void saveWiFiCredentials(const String &ssid, const String &password);
 
 bool isWifiConnected();
+IPAddress getWifiIP();
 void initWIFI(String ssid, String password);
 #endif

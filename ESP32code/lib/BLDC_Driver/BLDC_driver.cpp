@@ -271,13 +271,13 @@ void OLEDrpmSet(int rpm){
         u8g2.drawStr(COLUMN2 , LINE2, formatRPM(rpm)); 
     }
     else {
-        u8g2.drawStr(COLUMN2 , LINE2, "       ");
+        u8g2.drawStr(COLUMN2 , LINE2, "        ");
         u8g2.drawStr(COLUMN2 , LINE2, "N/A");
     }
     u8g2.sendBuffer();
 }
 void OLEDrpmRead(int rpm){
-    u8g2.drawStr(COLUMN2 , LINE4, "       ");
+    u8g2.drawStr(COLUMN2 , LINE4, "         ");
     u8g2.drawStr(COLUMN2 , LINE4, formatRPM(rpm));  
     u8g2.sendBuffer();
 }
@@ -348,12 +348,6 @@ void setCombinedDACOutput(int inputValue) {
     float integral = 0.0;
 
 void regulateRPMWithPID() {
-    
-    // Break out of loop when the error is sufficiently small (within a threshold)
-    // if (fabs(error) < 25) {
-    //     turnEngineControlPID = false;
-    //     return;
-    // }
     error = engineSetRPM - engineReadRPM;
 
     integral += error * DELTA_TIME_PID/1000;
@@ -406,4 +400,8 @@ void changeDirection(){
     OLEDdir(engineDirection);
     resetTimer(); //resets timer so PID doesn't get disrupted so much by the action
 }
-
+void changeDirection(bool engineDirection){
+    digitalWrite(DIRECTION_PIN, ENGINE_REVERSE_DIR_CONTROL ? !engineDirection : engineDirection);
+    OLEDdir(engineDirection);
+    resetTimer(); //resets timer so PID doesn't get disrupted so much by the action
+}

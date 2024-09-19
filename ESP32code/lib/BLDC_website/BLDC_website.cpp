@@ -157,8 +157,11 @@ const char index_html[] PROGMEM = R"rawliteral(
 )rawliteral";
 
 bool isWifiConnected(){
-    return WiFi.status() != WL_CONNECTED;
+    return WiFi.status() == WL_CONNECTED;
 }
+ IPAddress getWifiIP(){
+  return WiFi.localIP();
+ }
 
 void initWIFI(String ssid, String password) {
     if (ssid.length() > 0 && password.length() > 0) {

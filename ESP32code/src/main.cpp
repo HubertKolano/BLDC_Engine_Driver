@@ -14,7 +14,7 @@ void setup() {
   readWiFiCredentials(ssid, password);
   initWIFI(ssid, password);
 
-  serialMenuMessage();
+  serial0MenuMessage();
 }
 
 void loop() {
@@ -26,7 +26,8 @@ void loop() {
     OLEDrpmRead(engineReadRPM);
   }
   checkButtons();
-  checkUart();
+  checkUarts();
+  //checkUart();
 
   
 

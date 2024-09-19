@@ -30,9 +30,9 @@
 #define DIRECTION_PIN 27
 
 //RPM regulate function
-#define PID_Kp 0.5
-#define PID_Ki 0.2
-#define PID_Kd 0.1
+#define PID_Kp 0.3
+#define PID_Ki 0.45
+#define PID_Kd 0.7
 #define DELTA_TIME_PID 1000
 
 //buttons pins and timings
@@ -41,7 +41,7 @@
 #define BUTTON3_PIN 19
 #define BUTTON4_PIN 5
 #define DEBOUNCE_TIME 50          
-#define LONG_PRESS_TIME 600
+#define LONG_PRESS_TIME 350
 #define HOLD_PRESS_INTERVAL 100
 
 //engine parameters
@@ -109,7 +109,7 @@ void turnOffRegulationPID();
 //direction control
 void initDirection();
 void changeDirection();
-
+void changeDirection(bool engineDirection);
 
 
 

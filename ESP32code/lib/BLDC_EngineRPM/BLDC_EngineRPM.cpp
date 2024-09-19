@@ -11,7 +11,7 @@ void IRAM_ATTR onPulse() {
 
 void setupEngineRPM() {
     pinMode(34, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(34), onPulse, RISING); 
+    attachInterrupt(digitalPinToInterrupt(34), onPulse, FALLING); 
 
     xTaskCreatePinnedToCore(
         engineRPMTask,         // Task function
@@ -41,3 +41,4 @@ void engineRPMTask(void *pvParameters) {
         }
     }
 }
+

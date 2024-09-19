@@ -1,0 +1,9 @@
+
+SET:VOLTAGE %d		ustawia napiecie na wyjsciu [mV]
+SET:RPM %f		kontrola nastawy do wartosci zadanej
+SET:WIFI %s %s		wpisanie do pamieci ssid i hasła wifi (wymaga restartu urzadzenia)
+SET:DIRECTION 		zmiana kierunku obrotow
+
+GET:WIFI		status wifi, jesli wlaczone podaje ip
+GET:VOLTAGE		pokazuje napiecie na wyjsciu układu [mV[
+GET:RPM			pokazuje zmierzone rpm silnika

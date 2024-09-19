@@ -3,11 +3,10 @@
 #define ANALOG_PIN 34
 #define PWM_PIN 14
 #define PWM_CHANNEL 0
-#define PWM_RESOLUTION 7
-#define PWM_BASE_FREQ 108000
-#define TIME_INTERVAL 500 // 0,5sec update time
+#define PWM_RESOLUTION 8
+#define PWM_BASE_FREQ 2100
+#define TIME_INTERVAL 100 // 0,1sec update time
 unsigned long previousMillis = 0; // To store last update time
-const unsigned long interval = 2000; // Update interval of 2sec
 
 void setup() {
   Serial.begin(115200);
