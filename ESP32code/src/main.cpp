@@ -14,7 +14,6 @@ void setup() {
   readWiFiCredentials(ssid, password);
   initWIFI(ssid, password);
 
-  serial0MenuMessage();
 }
 
 void loop() {
@@ -27,7 +26,6 @@ void loop() {
   }
   checkButtons();
   checkUarts();
-  //checkUart();
 
   
 

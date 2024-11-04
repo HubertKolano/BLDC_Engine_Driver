@@ -1,9 +1,8 @@
+SET:VOLTAGE %d       sets the output voltage [mV]
+SET:RPM %f           controls the setpoint to the desired value
+SET:WIFI %s %s       stores the Wi-Fi SSID and password (requires device restart)
+SET:DIRECTION        changes the rotation direction
 
-SET:VOLTAGE %d		ustawia napiecie na wyjsciu [mV]
-SET:RPM %f		kontrola nastawy do wartosci zadanej
-SET:WIFI %s %s		wpisanie do pamieci ssid i hasła wifi (wymaga restartu urzadzenia)
-SET:DIRECTION 		zmiana kierunku obrotow
-
-GET:WIFI		status wifi, jesli wlaczone podaje ip
-GET:VOLTAGE		pokazuje napiecie na wyjsciu układu [mV[
-GET:RPM			pokazuje zmierzone rpm silnika
+GET:WIFI             Wi-Fi status; if enabled, shows the IP
+GET:VOLTAGE          shows the output voltage of the circuit [mV]
+GET:RPM              shows the measured RPM of the motor
